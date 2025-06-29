@@ -1,30 +1,20 @@
- 
-// const connectMongoDb = require("./src/mongoConfig/connectDB");
-// const { PORT } = require("./src/secretFile/secret");
-// const serverApp = require("./src/serverApp");
- 
-//   // connectMongoDb()
-// // Running Server
-// try {
 
-//   serverApp.listen(PORT, async () => {
-//     console.log(`Event Management Server Running - http://localhost:${PORT}`);
-//   });
+const connectMongoDb = require("./src/mongoConfig/connectDB");
+const { PORT } = require("./src/secretFile/secret");
+const serverApp = require("./src/serverApp");
 
-// } catch (error) {
-//   console.log(error.message)
-// }
+// connectMongoDb()
+// Running Server
+try {
 
+  serverApp.listen(PORT, async () => {
+    console.log(`Event Management Server Running - http://localhost:${PORT}`);
+  });
 
-const express = require('express')
-const serverApp = require('./src/serverApp')
-const app = express()
-const port = 3000
+} catch (error) {
+  console.log(error.message)
+}
 
 
- 
-serverApp.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
 
 
