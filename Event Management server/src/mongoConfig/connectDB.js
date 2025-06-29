@@ -1,7 +1,11 @@
 const mongoose = require('mongoose'); 
 const { mongodbURL } = require('../secretFile/secret');
 
+<<<<<<< HEAD
 const connectMongoDB = async () => {
+=======
+const connectMongoDb = async () => {
+>>>>>>> 7ee6c28f036ea238c7c934d0d6e860f946dce243
    mongoose.set('strictQuery', false);
    try {
       await mongoose
@@ -17,4 +21,8 @@ const connectMongoDB = async () => {
    }
 }
 
+<<<<<<< HEAD
 module.exports = connectMongoDB ;
+=======
+module.exports = connectMongoDb ;
+>>>>>>> 7ee6c28f036ea238c7c934d0d6e860f946dce243

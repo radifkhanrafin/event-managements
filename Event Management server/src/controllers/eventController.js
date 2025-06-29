@@ -4,6 +4,7 @@ const { eventCollection } = require("../Database Collection/collection");
 
 // post a event  
 
+<<<<<<< HEAD
 const postEvent = async (req, res) => {
     const newData = req.body;
     console.log(newData)
@@ -46,6 +47,37 @@ const postEvent = async (req, res) => {
 //         res.status(500).json({ error: 'Server error while posting event' } );
 //     }
 // };
+=======
+
+const postEvent = async (req, res) => {
+    try {
+        const { title, name, date, location, description } = req.body;
+
+        if (!title || !name || !date || !location || !description) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        // Create new event
+        const newEvent = new Event({
+            title,
+            name,
+            date,
+            location,
+            description,
+            attendeeCount: 0,
+            createdBy: req.userId,
+            joinedUsers: [],
+        });
+
+        const savedEvent = await newEvent.save();
+
+        res.status(201).json(savedEvent);
+    } catch (error) {
+        console.error('Error posting event:', error);
+        res.status(500).json({ error: 'Server error while posting event' });
+    }
+};
+>>>>>>> 7ee6c28f036ea238c7c934d0d6e860f946dce243
 // Get all event
 const getAllEvent = async (req, res) => {
     try {
@@ -57,4 +89,8 @@ const getAllEvent = async (req, res) => {
 };
 
 
+<<<<<<< HEAD
 module.exports = { postEvent, getAllEvent }
+=======
+module.exports = { postEvent,getAllEvent }
+>>>>>>> 7ee6c28f036ea238c7c934d0d6e860f946dce243
