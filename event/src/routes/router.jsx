@@ -1,0 +1,57 @@
+import { createBrowserRouter } from "react-router-dom";
+import Homepage from "../components/HomePase";
+import Login from "../components/Login";
+import Register from "../components/Register";
+import Events from "../components/Event";
+import App from "../App";
+import AddEvent from "../components/AddEvent";
+import MyEvents from "../components/MyEvent";
+import PrivateRoute from "./PrivateRoute";
+import { axiosSecure } from "../hooks/useAxios";
+
+
+export const eventsLoader = async () => {
+    const response = await axiosSecure.get("/event");
+    return response.data;
+};
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+        // errorElement: <ErrorPage></ErrorPage>,
+        children: [
+            {
+                path: '/',
+                element: <Homepage></Homepage>
+            },
+            {
+                path: '/login',
+                element: <Login></Login>
+            },
+            {
+                path: '/signup',
+                element: <Register></Register>
+            },
+            {
+                path: '/events',
+                element: <PrivateRoute><Events />  </PrivateRoute>,
+                loader: eventsLoader
+
+            },
+            {
+                path: '/add-event',
+                element: <PrivateRoute> <AddEvent /></PrivateRoute>
+
+            },
+            {
+                path: '/my-events',
+                element: <PrivateRoute> <MyEvents /></PrivateRoute>
+
+            },
+
+        ]
+    },
+
+]);
+export default router;

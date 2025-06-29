@@ -1,130 +1,86 @@
-<<<<<<< HEAD
- 
-=======
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { usersCollection } = require('../Database Collection/collection');
 
-// // Add A User On DataBase
-// const postUser = async (req, res) => {
-//     try {
-//         const newUserData = req.body;
-//         console.log(newUserData)
-//         const query = { email: newUserData.email };
-//         const isExist = await userCollection.findOne(query);
+// POST /api/users
+const postUser = async (req, res) => {
+  const { name, email, password, about, photoURL } = req.body;
+console.log("body",req.body)
+  try {
+    const salt = parseInt(process.env.BCRYPT_SALT);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-//         if (isExist) {
-//             return res.status(201).send({ message: "user exist" });
-//         } else {
+    const user = new usersCollection({
+      name,
+      email,
+      password: hashedPassword,
+      about,
+      photoURL,
+    });
+console.log(user)
+    const createdUser = await user.save();
 
-
-//             if (newUserData.role === "attorney") {
-//                 const newAttorney = {
-//                     name: newUserData.name,
-//                     img: newUserData.image,
-//                     about: "",
-//                     practiceArea: "",
-//                     location: "",
-//                     rating: "",
-//                     license: {},
-//                     documents: [],
-//                     experience: [],
-//                     education: [],
-//                     reviews: [],
-//                     awards: [],
-//                     email: newUserData.email
-//                 }
-//                 const newUser = {
-//                     role: newUserData.role,
-//                     name: newUserData.name,
-//                     image: newUserData.image,
-//                     email: newUserData.email,
-//                     status: "pending",
-//                 }
-//                 const insertUser = await userCollection(newUser).save();
-//                 const insertNewAttorney = await lawyerCollection(newAttorney).save()
-//                 return res.status(200).json(insertNewAttorney)
-//             }
-
-
-//             if (newUserData.role === "client") {
-
-//                 const newClient = {
-//                     name: newUserData.name,
-//                     img: newUserData.image,
-//                     occupation: "",
-//                     email: newUserData.email,
-//                     location: "",
-//                 }
-//                 const newUser = {
-//                     role: newUserData.role,
-//                     name: newUserData.name,
-//                     image: newUserData.image,
-//                     email: newUserData.email,
-//                     status: "approved",
-//                 }
-//                 const insertUser = await userCollection(newUser).save();
-
-
-//                 const insertClient = await clientCollection(newClient).save();
-//                 return res.status(200).json(insertClient)
-//             }
-
-
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         res.status(404).send({ message: "Server Broke", });
-//     }
-// };
-
-// // Get a user by email
-// const getUserByEmail = async (req, res) => {
-//     try {
-//         const user = await userCollection.findOne({ email: req.params.email });
-//         res.status(200).send(user);
-//     } catch (error) {
-//         res.status(404).send({ message: error.message });
-//     }
-// };
-
-// // Get a user by Id
-// const getUserById = async (req, res) => {
-//     try {
-//         const user = await userCollection.findById(req.params.id);
-//         res.status(200).json(user);
-//     } catch (error) {
-//         res.status(404).send({ message: error.message });
-//     }
-// };
-
->>>>>>> 7ee6c28f036ea238c7c934d0d6e860f946dce243
-
-
-const getAllUser = async (req, res) => {
-    try {
-        // ✅ Fake user data array
-        const allUsers = [
-            {
-                _id: "1",
-                name: "Alice",
-                email: "alice@example.com",
-            },
-            {
-                _id: "2",
-                name: "Bob",
-                email: "bob@example.com",
-            },
-            {
-                _id: "3",
-                name: "Charlie",
-                email: "charlie@example.com",
-            },
-        ];
-
-        res.status(200).json(allUsers);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    res.status(201).json(createdUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Failed to create user!',
+      status: false,
+    });
+  }
 };
 
+// POST /api/login
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
+    const user = await usersCollection.findOne({ email });
+    // console.log("login user",user)
+    if (!user) {
+      return res.status(404).json({
+        message: "This user is not available in the database.",
+        status: 404,
+      });
+    }
 
-module.exports = { getAllUser }
+    const matched = bcrypt.compareSync(password, user.password);
+    if (!matched) {
+      return res.status(401).json({
+        message: "Wrong password",
+        status: 401,
+      });
+    }
+
+    const token = jwt.sign(
+      { _id: user._id },
+      process.env.JWT_KEY, 
+      { expiresIn: '1d' }
+    );
+
+    const { password: pwd, ...userWithoutPassword } = user.toObject();
+
+    res
+      .cookie("login_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+      })
+      .status(200)
+      .json({
+        message: "Login successful",
+        success: true,
+        status: 200,
+        user: userWithoutPassword,
+      });
+  } catch (error) {
+    res.status(500).json({
+      message: `Error: ${error.message}`,
+      success: false,
+      status: 500,
+    });
+  }
+};
+
+module.exports = { postUser, loginUser };

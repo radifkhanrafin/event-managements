@@ -7,6 +7,7 @@ const xssClean = require("xss-clean");
 const cors = require("cors");
 const userRoute = require("./route/userRoute");
 const eventRoute = require("./route/eventRoute");
+const connectMongoDB = require("./mongoConfig/connectDB");
 
 const serverApp = express();
 
@@ -31,6 +32,7 @@ serverApp.use(bodyParser.urlencoded({ extended: true }));
 // };
 // Root Route
 
+connectMongoDB()
 serverApp.get("/", (req, res) =>
     res.status(200).send(`Hello. <br/> Event management Database Running`)
 );
