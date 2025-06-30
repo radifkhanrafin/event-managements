@@ -1,6 +1,6 @@
-"use client"
-
+ 
 import { useState } from "react"
+import { FaLocationDot } from "react-icons/fa6";
 import { useAuth } from "../contexts/AuthContext"
 import { axiosSecure } from "../hooks/useAxios"
 import { Navigate, useNavigate } from "react-router-dom"
@@ -114,7 +114,7 @@ const AddEvent = () => {
               </label>
               <input
                 id="time"
-                type="time"  // change type to time for native time picker
+                type="time"  
                 value={formData.time}
                 onChange={(e) => setFormData({ ...formData, time: e.target.value })} // update using setter inline
                 required
@@ -126,8 +126,8 @@ const AddEvent = () => {
           </div>
 
           <div>
-            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
-              📍 Location
+            <label htmlFor="location" className="text-sm font-medium text-gray-700 mb-1 flex gap-2 items-center">
+              <FaLocationDot/> Location
             </label>
             <input
               id="location"

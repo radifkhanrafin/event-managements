@@ -1,7 +1,7 @@
 "use client"
 import { Link } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
-
+import { FaCalendarCheck, FaClock, FaLocationPin, FaLocationPinLock, FaUsers } from "react-icons/fa6";
 const Homepage = ({ navigate }) => {
   const { user } = useAuth()
 
@@ -63,27 +63,27 @@ const Homepage = ({ navigate }) => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center p-6 bg-white rounded-lg shadow-md">
-              <div className="text-4xl mb-4">📅</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 ">
+            <div className="text-center p-6 bg-white rounded-lg shadow-md  flex flex-col items-center">
+              <div className="text-4xl mb-4"><FaCalendarCheck /></div>
               <h3 className="text-xl font-semibold mb-2">Easy Event Creation</h3>
               <p className="text-gray-600">Create and customize your events with our intuitive interface</p>
             </div>
 
-            <div className="text-center p-6 bg-white rounded-lg shadow-md">
-              <div className="text-4xl mb-4">👥</div>
+            <div className="text-center p-6 bg-white rounded-lg shadow-md  flex flex-col items-center">
+              <div className="text-4xl mb-4"><FaUsers /></div>
               <h3 className="text-xl font-semibold mb-2">Community Driven</h3>
               <p className="text-gray-600">Connect with like-minded people and build your community</p>
             </div>
 
-            <div className="text-center p-6 bg-white rounded-lg shadow-md">
-              <div className="text-4xl mb-4">📍</div>
+            <div className="text-center p-6 bg-white rounded-lg shadow-md  flex flex-col items-center">
+              <div className="text-4xl mb-4"><FaLocationPinLock /></div>
               <h3 className="text-xl font-semibold mb-2">Location Based</h3>
               <p className="text-gray-600">Find events near you or create events for your local area</p>
             </div>
 
-            <div className="text-center p-6 bg-white rounded-lg shadow-md">
-              <div className="text-4xl mb-4">⏰</div>
+            <div className="text-center p-6 bg-white rounded-lg shadow-md flex flex-col items-center ">
+              <div className="text-4xl mb-4"><FaClock /></div>
               <h3 className="text-xl font-semibold mb-2">Real-time Updates</h3>
               <p className="text-gray-600">Stay updated with real-time notifications and event changes</p>
             </div>

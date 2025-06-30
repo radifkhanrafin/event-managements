@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import calender from "../../src/assets/calander.png";
+
+
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -24,7 +27,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <div className="h-8 w-8 bg-blue-600 rounded flex items-center justify-center">
-                <span className="text-white font-bold">📅</span>
+                <span className="text-white font-bold"><img src={calender} className="h-8" alt="" /></span>
               </div>
               <span className="text-xl font-bold text-gray-900">EventHub</span>
             </Link>
