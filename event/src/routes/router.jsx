@@ -1,19 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
-import Homepage from "../components/HomePase";
+import Homepage from "../components/HomePage";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import Events from "../components/Event";
 import App from "../App";
 import AddEvent from "../components/AddEvent";
 import MyEvents from "../components/MyEvent";
-import PrivateRoute from "./PrivateRoute";
-import { axiosSecure } from "../hooks/useAxios";
+import PrivateRoute from "./PrivateRoute"; 
 
 
-export const eventsLoader = async () => {
-    const response = await axiosSecure.get("/event");
-    return response.data;
-};
+ 
 
 
 const router = createBrowserRouter([
@@ -36,8 +32,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/events',
-                element: <PrivateRoute><Events />  </PrivateRoute>,
-                loader: eventsLoader
+                element: <PrivateRoute><Events />  </PrivateRoute>, 
 
             },
             {

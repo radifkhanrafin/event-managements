@@ -1,9 +1,13 @@
 
 import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { FaEye, FaLock, FaPhotoFilm, FaUser } from "react-icons/fa6";
+import { MdAttachEmail } from "react-icons/md";
+import { IoEyeOffOutline, IoLockClosed } from "react-icons/io5";
 
-const Register = ( ) => {
+
+const Register = () => {
   const navigate = useNavigate();
   const { register } = useAuth()
   const [formData, setFormData] = useState({
@@ -98,8 +102,8 @@ const Register = ( ) => {
           )}
 
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-              👤 Full Name
+            <label htmlFor="name" className=" text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+              <FaUser /> Full Name
             </label>
             <input
               id="name"
@@ -115,8 +119,8 @@ const Register = ( ) => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              📧 Email
+            <label htmlFor="email" className=" text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+              <MdAttachEmail /> Email
             </label>
             <input
               id="email"
@@ -133,7 +137,7 @@ const Register = ( ) => {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              🔒 Password
+              <IoLockClosed /> Password
             </label>
             <div className="relative">
               <input
@@ -149,17 +153,17 @@ const Register = ( ) => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 flex items-center"
               >
-                {showPassword ? "🙈" : "👁️"}
+                {showPassword ? <FaLock /> : <FaEye />} ,
               </button>
             </div>
             {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
           </div>
 
           <div>
-            <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700 mb-1">
-              🖼️ Photo URL
+            <label htmlFor="photoURL" className="text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+              <FaPhotoFilm /> Photo URL
             </label>
             <input
               id="photoURL"
@@ -185,13 +189,12 @@ const Register = ( ) => {
           <div className="text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <button
+              <Link to='/login'><button
                 type="button"
-                onClick={() => navigate("login")}
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
                 Sign in
-              </button>
+              </button></Link>
             </p>
           </div>
         </form>

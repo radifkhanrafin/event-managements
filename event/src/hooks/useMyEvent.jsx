@@ -4,11 +4,12 @@ import { useAuth } from "../contexts/AuthContext";
 
 const useMyEvent = () => {
     const { user } = useAuth()
+    console.log(user)
     const [axiosSecure] = useAxiosSecure();
     const { data: myEventData = [], isLoading: loading, refetch } = useQuery({
         queryKey: ['myEventData'],
         queryFn: async () => {
-            const res = await axiosSecure.get(`event/user/${user?._id}`);
+            const res = await axiosSecure.get(`event/user/${user?.user?._id}`);
             return res.data;
         },
     });
@@ -16,3 +17,4 @@ const useMyEvent = () => {
 };
 
 export default useMyEvent;
+

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import calender from "../../src/assets/calander.png";
-
+import { FaSignOutAlt } from "react-icons/fa";
+import { FaOutdent, FaUser } from "react-icons/fa6";
 
 
 const Navbar = () => {
@@ -17,6 +18,7 @@ const Navbar = () => {
     navigate("/"); // redirect to home after logout
   };
 
+  // console.log(user?.user?.photoURL)
   const isActive = (path) => location.pathname === path;
 
   // console.log(user)
@@ -76,20 +78,20 @@ const Navbar = () => {
                   className="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-gray-100"
                 >
                   <img
-                    src={user.photoURL || "https://via.placeholder.com/32"}
-                    alt={user.name}
+                    src={user?.user?.photoURL|| "https://via.placeholder.com/32"}
+                    alt={user?.user?.name}
                     className="h-8 w-8 rounded-full"
                   />
                   <span className="text-sm">▼</span>
                 </button>
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                    <div className="px-4 py-2 text-sm text-gray-700 border-b">👤 {user.name}</div>
+                    <div className="px-4 py-2 text-sm text-gray-700 border-b flex items-center gap-2"><FaUser/> {user?.user?.name}</div>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
-                      🚪 Logout
+                       <FaSignOutAlt/> Logout
                     </button>
                   </div>
                 )}

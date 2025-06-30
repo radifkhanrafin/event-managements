@@ -31,28 +31,26 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Login function
-const login = async (email, password) => {
-  try {
-    const user = { email, password };
+  const login = async (email, password) => {
+    try {
+      const user = { email, password };
 
-    const response = await axiosSecure.post('users/login', user);
+      const response = await axiosSecure.post("/users/login", user, { withCredentials: true });
+      console.log(response.data);
+      const userData = response.data;
 
-    const userData = response.data.user;
+      setUser(userData);
 
-    // ✅ Save to context
-    setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
 
-    // ✅ Save to localStorage
-    localStorage.setItem('user', JSON.stringify(userData));
+      // console.log('User login:', userData);
+      return true;
 
-    console.log('User login:', userData);
-    return true;
-
-  } catch (error) {
-    console.error('Failed to login:', error.response?.data || error.message);
-    return false;
-  }
-};
+    } catch (error) {
+      console.error('Failed to login:', error.response?.data || error.message);
+      return false;
+    }
+  };
 
   // Register function
   const register = async (name, email, password, photoURL) => {
@@ -65,11 +63,10 @@ const login = async (email, password) => {
         photoURL,
       };
 
-      console.log('Registering user:', newUser);
 
-      const response = await axiosSecure.post('users/register', newUser);
-
-      console.log('User created:', response.data);
+      const response = await axiosSecure.post('users/register', newUser, { withCredentials: true });
+      console.log(response.data); // will have token & user!
+      // console.log('User created:', response.data);
 
       return true;
 

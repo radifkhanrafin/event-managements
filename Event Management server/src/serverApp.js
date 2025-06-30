@@ -3,33 +3,30 @@ console.clear();
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const xssClean = require("xss-clean");
 const cors = require("cors");
 const userRoute = require("./route/userRoute");
 const eventRoute = require("./route/eventRoute");
 const connectMongoDB = require("./mongoConfig/connectDB");
-
+const jwt = require('jsonwebtoken');
+const verifyToken = require("./tokenVerify");
 const serverApp = express();
 
 
-// serverApplication level middleware
-serverApp.use(cors());
+// serverApplication level middleware 
 serverApp.use(morgan("dev"));
 serverApp.use(express.json());
 serverApp.use(bodyParser.json());
 serverApp.use(bodyParser.urlencoded({ extended: true }));
 
 
-// const verifyToken = (req, res, next) => {
-//     const bearer = req.headers['authorization'];
-//     if (!bearer) return res.status(403).json({ error: 'No token' });
-//     const token = bearer.split(' ')[1];
-//     jwt.verify(token, SECRET, (err, decoded) => {
-//         if (err) return res.status(403).json({ error: 'Invalid token' });
-//         req.userId = decoded.id;
-//         next();
-//     });
-// };
+serverApp.use(cors({
+    origin: 'http://localhost:5173',  // your frontend URL
+    credentials: true,                // enable sending cookies/credentials
+}));
+
+
+
+
 // Root Route
 
 connectMongoDB()

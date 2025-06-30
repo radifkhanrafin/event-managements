@@ -1,18 +1,16 @@
 import Swal from 'sweetalert2'
 import { useState, } from "react"
-import { useAuth } from "../contexts/AuthContext"
+
 import { axiosSecure } from "../hooks/useAxios"
 import useMyEvent from '../hooks/useMyEvent'
 import { FaCalendar, FaDeleteLeft, FaLocationDot, FaPen, FaUser, FaUsers } from "react-icons/fa6";
 import { MdDeleteForever } from "react-icons/md";
+import { Link } from 'react-router-dom'
 
 const MyEvents = () => {
   const [myEventData, loading, refetch] = useMyEvent();
   const [editingEvent, setEditingEvent] = useState(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-
-
-
 
   const handleEdit = (event) => {
     setEditingEvent(event)
@@ -116,7 +114,8 @@ const MyEvents = () => {
             // onClick={() => navigate("add-event")}
             className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
           >
-            Create Event
+
+            <Link to='/add-event'>Create Event</Link>
           </button>
         </div>
       ) : (
@@ -130,36 +129,38 @@ const MyEvents = () => {
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-purple-600"></div>
 
               <div className="p-6">
-                {/* Title */}
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">{event.title}</h3>
+                <div className='min-h-60 '>
+                  {/* Title */}
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">{event.title}</h3>
 
-                {/* Organizer */}
-                <p className="flex items-center text-sm text-gray-500 mb-3">
-                  <FaUser className="text-blue-600 mr-2" />
-                  {event.name}
-                </p>
+                  {/* Organizer */}
+                  <p className="flex items-center text-sm text-gray-500 mb-3">
+                    <FaUser className="text-blue-600 mr-2" />
+                    {event.name}
+                  </p>
 
-                {/* Date & Location */}
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <FaCalendar className="text-purple-600 mr-2" />
-                    {formatDate(event.date)} at {formatTime(event.time)}
+                  {/* Date & Location */}
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <FaCalendar className="text-purple-600 mr-2" />
+                      {formatDate(event.date)} at {formatTime(event.time)}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <FaLocationDot className="text-purple-600 mr-2" />
+                      {event.location}
+                    </div>
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <FaLocationDot className="text-purple-600 mr-2" />
-                    {event.location}
+
+                  {/* Description */}
+                  <p className="text-gray-700 text-sm mb-4 line-clamp-3">
+                    {event.description}
+                  </p>
+
+                  {/* Attendee Count */}
+                  <div className="flex items-center text-sm text-gray-600 mb-5">
+                    <FaUsers className="text-blue-600 mr-2" />
+                    {event.attendeeCount} attendees
                   </div>
-                </div>
-
-                {/* Description */}
-                <p className="text-gray-700 text-sm mb-4 line-clamp-3">
-                  {event.description}
-                </p>
-
-                {/* Attendee Count */}
-                <div className="flex items-center text-sm text-gray-600 mb-5">
-                  <FaUsers className="text-blue-600 mr-2" />
-                  {event.attendeeCount} attendees
                 </div>
 
                 {/* Actions */}

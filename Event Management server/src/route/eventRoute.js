@@ -1,15 +1,29 @@
 const express = require("express");
-const {  getAllEvent, postEvent, updateEventAttendees, postManyEvent, getEventById, getEventByUser, getEventByIdAndDelete, getEvent, updateEvent } = require("../controllers/eventController");
+const {
+  getAllEvent,
+  postEvent,
+  updateEventAttendees,
+  postManyEvent,
+  getEventByUser,
+  getEventByIdAndDelete,
+  getEvent,
+  updateEvent
+} = require("../controllers/eventController");
+const verifyToken = require("../tokenVerify");
+
+
 const eventRoute = express.Router();
 
-eventRoute.post('/', postEvent)
-eventRoute.post('/many', postManyEvent)
-eventRoute.get('/', getAllEvent)
-eventRoute.get('/:id', getEvent)
-eventRoute.patch('/:id', updateEvent)
-eventRoute.get('/user/:id', getEventByUser)
-eventRoute.patch('/:eventId', updateEventAttendees)
-eventRoute.delete('/:eventId', getEventByIdAndDelete)
+//  Public routes
+eventRoute.get('/', getAllEvent);
+eventRoute.get('/:id', getEvent);
 
+//  Protected routes
+eventRoute.post('/', verifyToken, postEvent);
+eventRoute.post('/many', verifyToken, postManyEvent);
+eventRoute.patch('/:id', verifyToken, updateEvent);
+eventRoute.patch('/:eventId', verifyToken, updateEventAttendees);
+eventRoute.delete('/:eventId', verifyToken, getEventByIdAndDelete);
+eventRoute.get('/user/:id', verifyToken, getEventByUser);
 
 module.exports = eventRoute;

@@ -5,7 +5,7 @@ const { usersCollection } = require('../Database Collection/collection');
 // POST /api/users
 const postUser = async (req, res) => {
   const { name, email, password, about, photoURL } = req.body;
-console.log("body",req.body)
+  console.log("body", req.body)
   try {
     const salt = parseInt(process.env.BCRYPT_SALT);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -17,7 +17,7 @@ console.log("body",req.body)
       about,
       photoURL,
     });
-console.log(user)
+    console.log(user)
     const createdUser = await user.save();
 
     res.status(201).json(createdUser);
@@ -32,11 +32,12 @@ console.log(user)
 
 // POST /api/login
 const loginUser = async (req, res) => {
+  // console.log('from verity')
   try {
     const { email, password } = req.body;
 
     const user = await usersCollection.findOne({ email });
-    // console.log("login user",user)
+    // console.log('from verity',user)
     if (!user) {
       return res.status(404).json({
         message: "This user is not available in the database.",
@@ -54,11 +55,11 @@ const loginUser = async (req, res) => {
 
     const token = jwt.sign(
       { _id: user._id },
-      process.env.JWT_KEY, 
+      process.env.JWT_KEY,
       { expiresIn: '1d' }
     );
-
-    const { password: pwd, ...userWithoutPassword } = user.toObject();
+    // console.log("Generated JWT token:", token); 
+    const { password: pwd, ...userWithoutPassword } = user.toObject ? user.toObject() : user;
 
     res
       .cookie("login_token", token, {
@@ -72,8 +73,10 @@ const loginUser = async (req, res) => {
         message: "Login successful",
         success: true,
         status: 200,
+        token,
         user: userWithoutPassword,
       });
+
   } catch (error) {
     res.status(500).json({
       message: `Error: ${error.message}`,
@@ -82,5 +85,6 @@ const loginUser = async (req, res) => {
     });
   }
 };
+
 
 module.exports = { postUser, loginUser };

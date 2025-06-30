@@ -1,14 +1,17 @@
-"use client"
 
 import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 
-const Login = ( ) => {
+import { FaEye, FaLock } from "react-icons/fa6";
+import { MdAttachEmail } from "react-icons/md";
+import { IoEyeOffOutline } from "react-icons/io5";
+
+
+const Login = () => {
   const { login } = useAuth()
-  const navigate=useNavigate();
-  const path=useLocation()
-  console.log(path?.state?.from?.pathname)
+  const navigate = useNavigate();
+  const path = useLocation()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -88,8 +91,8 @@ const Login = ( ) => {
           )}
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              📧 Email
+            <label htmlFor="email" className=" text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+              <MdAttachEmail /> Email
             </label>
             <input
               id="email"
@@ -98,16 +101,15 @@ const Login = ( ) => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-300"
+                }`}
             />
             {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              🔒 Password
+            <label htmlFor="password" className="  text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+              <FaLock /> Password
             </label>
             <div className="relative">
               <input
@@ -117,16 +119,15 @@ const Login = ( ) => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
               >
-                {showPassword ? "🙈" : "👁️"}
+                {showPassword ? <IoEyeOffOutline /> : <FaEye />}
               </button>
             </div>
             {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
@@ -144,12 +145,12 @@ const Login = ( ) => {
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
               <Link to='/register'><button
-                type="button" 
+                type="button"
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
                 Sign up
               </button></Link>
-              
+
             </p>
           </div>
         </form>
