@@ -16,7 +16,7 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname === path;
 
-  console.log(user)
+  // console.log(user)
   return (
     <nav className="bg-white shadow-lg border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,12 +90,14 @@ const Navbar = () => {
                     </button>
                   </div>
                 )}
-              </div> : <button
-                onClick={() => navigate("/login")}
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 hidden"
-              >
-                Sign In
-              </button>
+              </div> :
+                <Link to='/login'> <button
+
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 hidden"
+                >
+                  Sign In
+                </button></Link>
+
             }
 
           </div>

@@ -1,4 +1,5 @@
 "use client"
+import { Link } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 
 const Homepage = ({ navigate }) => {
@@ -17,33 +18,34 @@ const Homepage = ({ navigate }) => {
             <div className="space-x-4">
               {user ? (
                 <>
-                  <button
-                    onClick={() => navigate("events")}
+                  <Link to='/events'><button
                     className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100"
                   >
                     Browse Events
-                  </button>
-                  <button
+                  </button></Link>
+                  <Link to='/add-event'><button
                     onClick={() => navigate("add-event")}
                     className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600"
                   >
                     Create Event
-                  </button>
+                  </button></Link>
                 </>
               ) : (
                 <>
-                  <button
+                  <Link to='/register'><button
                     onClick={() => navigate("register")}
                     className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100"
                   >
                     Get Started
-                  </button>
-                  <button
-                    onClick={() => navigate("login")}
+                  </button></Link>
+
+
+                  <Link to='/login'><button
+
                     className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600"
                   >
                     Sign In
-                  </button>
+                  </button></Link>
                 </>
               )}
             </div>
@@ -96,14 +98,14 @@ const Homepage = ({ navigate }) => {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Join thousands of event organizers and attendees who trust EventHub
           </p>
-          {!user && (
+          <Link to='/register'>{!user && (
             <button
-              onClick={() => navigate("register")}
+
               className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700"
             >
               Create Your Account
             </button>
-          )}
+          )}</Link>
         </div>
       </section>
     </div>

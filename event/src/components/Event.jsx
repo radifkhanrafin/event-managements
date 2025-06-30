@@ -1,92 +1,138 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useLoaderData } from "react-router-dom";
 import axios from "axios";
 import { axiosSecure } from "../hooks/useAxios";
+import { toast } from "react-toastify";
+import useEvent from "../hooks/useEvent";
 
 const Events = () => {
   const { user } = useAuth();
-  const loadedEvents = useLoaderData();
+  const [eventData, loading, refetch] = useEvent();
+  console.log(eventData)
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [dateFilter, setDateFilter] = useState("all");
-
-  // Sort and initialize events from DB
   useEffect(() => {
-    if (!loadedEvents) return;
-    const sorted = [...loadedEvents].sort((a, b) => {
-      const dateA = new Date(`${a.date} ${a.time}`);
-      const dateB = new Date(`${b.date} ${b.time}`);
-      return dateB - dateA;
+    if (loading) return;
+
+    const sorted = [...eventData].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+
+      if (dateB.getTime() !== dateA.getTime()) {
+        return dateB - dateA; // Descending by date
+      } else {
+        // Defensive checks for time
+        const timeA = typeof a.time === "string" ? a.time : "00:00";
+        const timeB = typeof b.time === "string" ? b.time : "00:00";
+
+        const [hoursA, minutesA] = timeA.split(':').map(Number);
+        const [hoursB, minutesB] = timeB.split(':').map(Number);
+
+        if (hoursB !== hoursA) return hoursB - hoursA;
+        return minutesB - minutesA;
+      }
     });
+
     setEvents(sorted);
     setFilteredEvents(sorted);
-  }, [loadedEvents]);
+  }, [eventData, loading]);
+
+
+
 
   // Apply search + filter
-  useEffect(() => {
-    let filtered = [...events];
+ useEffect(() => {
+  if (!eventData || eventData.length === 0) {
+    setFilteredEvents([]);
+    return;
+  }
 
-    if (searchTerm) {
-      filtered = filtered.filter((event) =>
-        event.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  let filtered = eventData.filter(event =>
+    event.title && typeof event.title === "string"
+      ? event.title.toLowerCase().includes(searchTerm.toLowerCase())
+      : false
+  );
+
+  // Helper date functions as above
+  const getStartOfWeek = () => {
+    const now = new Date();
+    const day = now.getDay();
+    const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(now.getFullYear(), now.getMonth(), diff, 0, 0, 0, 0);
+  };
+
+  const getEndOfWeek = (startOfWeek) => {
+    return new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() + 6, 23, 59, 59, 999);
+  };
+
+  const getStartOfLastWeek = (startOfWeek) => {
+    return new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() - 7, 0, 0, 0, 0);
+  };
+
+  const getEndOfLastWeek = (startOfLastWeek) => {
+    return new Date(startOfLastWeek.getFullYear(), startOfLastWeek.getMonth(), startOfLastWeek.getDate() + 6, 23, 59, 59, 999);
+  };
+
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+
+  const endOfToday = new Date();
+  endOfToday.setHours(23, 59, 59, 999);
+
+  const startOfWeek = getStartOfWeek();
+  const endOfWeek = getEndOfWeek(startOfWeek);
+
+  const startOfLastWeek = getStartOfLastWeek(startOfWeek);
+  const endOfLastWeek = getEndOfLastWeek(startOfLastWeek);
+
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0, 0);
+  const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
+
+  filtered = filtered.filter(event => {
+    const eventDate = new Date(event.date);
+    switch (dateFilter) {
+      case "today":
+        return eventDate >= startOfToday && eventDate <= endOfToday;
+      case "current-week":
+        return eventDate >= startOfWeek && eventDate <= endOfWeek;
+      case "last-week":
+        return eventDate >= startOfLastWeek && eventDate <= endOfLastWeek;
+      case "current-month":
+        return eventDate >= startOfMonth && eventDate <= endOfMonth;
+      case "last-month":
+        return eventDate >= startOfLastMonth && eventDate <= endOfLastMonth;
+      case "all":
+      default:
+        return true;
     }
+  });
 
-    if (dateFilter !== "all") {
-      const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  setFilteredEvents(filtered);
+}, [searchTerm, dateFilter, eventData]);
 
-      filtered = filtered.filter((event) => {
-        const eventDate = new Date(event.date);
-        switch (dateFilter) {
-          case "today":
-            return eventDate.toDateString() === today.toDateString();
-          case "current-week":
-            const startOfWeek = new Date(today);
-            startOfWeek.setDate(today.getDate() - today.getDay());
-            const endOfWeek = new Date(startOfWeek);
-            endOfWeek.setDate(startOfWeek.getDate() + 6);
-            return eventDate >= startOfWeek && eventDate <= endOfWeek;
-          case "last-week":
-            const lastWeekStart = new Date(today);
-            lastWeekStart.setDate(today.getDate() - today.getDay() - 7);
-            const lastWeekEnd = new Date(lastWeekStart);
-            lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
-            return eventDate >= lastWeekStart && eventDate <= lastWeekEnd;
-          case "current-month":
-            return (
-              eventDate.getMonth() === today.getMonth() &&
-              eventDate.getFullYear() === today.getFullYear()
-            );
-          case "last-month":
-            const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-            return (
-              eventDate.getMonth() === lastMonth.getMonth() &&
-              eventDate.getFullYear() === lastMonth.getFullYear()
-            );
-          default:
-            return true;
-        }
-      });
-    }
 
-    setFilteredEvents(filtered);
-  }, [events, searchTerm, dateFilter]);
 
-  // Join Event (✅ Only via backend)
+
+
+
+  // Join Event ( Only via backend)
   const handleJoinEvent = async (eventId) => {
     if (!user) return;
-    console.log(eventId)
+    // console.log(eventId)
     try {
 
       const response = await axiosSecure.patch(`/event/${eventId}`, {
         userId: user._id,
       });
-      console.log(response)
-      if (response.status) {
-        alert`${response.data.message}`
+      // console.log(response)
+      if (response.status == 200) {
+        toast('Event Joined')
       }
 
       const updated = events.map((event) => {

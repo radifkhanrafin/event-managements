@@ -1,51 +1,88 @@
- 
+import Swal from 'sweetalert2'
 import { useState, useEffect } from "react"
 import { useAuth } from "../contexts/AuthContext"
+import { axiosSecure } from "../hooks/useAxios"
+import useEvent from '../hooks/useEvent'
+import useMyEvent from '../hooks/useMyEvent'
 
-const MyEvents = ({ navigate }) => {
+const MyEvents = () => {
   const { user } = useAuth()
+  const [myEventData, loading, refetch] = useMyEvent();
   const [events, setEvents] = useState([])
   const [editingEvent, setEditingEvent] = useState(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
-  useEffect(() => {
-    const storedEvents = JSON.parse(localStorage.getItem("events") || "[]")
-    const userEvents = storedEvents.filter((event) => event.createdBy === user?.id)
-    const sortedEvents = userEvents.sort((a, b) => {
-      const dateA = new Date(`${a.date} ${a.time}`)
-      const dateB = new Date(`${b.date} ${b.time}`)
-      return dateB.getTime() - dateA.getTime()
-    })
-    setEvents(sortedEvents)
-  }, [user])
+
+
 
   const handleEdit = (event) => {
     setEditingEvent(event)
     setIsEditDialogOpen(true)
   }
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault()
     if (!editingEvent) return
 
-    const allEvents = JSON.parse(localStorage.getItem("events") || "[]")
-    const updatedEvents = allEvents.map((event) => (event.id === editingEvent.id ? editingEvent : event))
+    try {
+      const response = await axiosSecure.patch(`/event/${editingEvent._id}`, editingEvent);
 
-    localStorage.setItem("events", JSON.stringify(updatedEvents))
-    setEvents(events.map((event) => (event.id === editingEvent.id ? editingEvent : event)))
-    setIsEditDialogOpen(false)
-    setEditingEvent(null)
-  }
 
-  const handleDelete = (eventId) => {
-    if (window.confirm("Are you sure you want to delete this event? This action cannot be undone.")) {
-      const allEvents = JSON.parse(localStorage.getItem("events") || "[]")
-      const updatedEvents = allEvents.filter((event) => event.id !== eventId)
-
-      localStorage.setItem("events", JSON.stringify(updatedEvents))
-      setEvents(events.filter((event) => event.id !== eventId))
+      if (response.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Updated!",
+          text: "Your event has been updated."
+        });
+        setIsEditDialogOpen(false);
+        refetch();
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
     }
+
   }
+
+
+  const handleDelete = async (eventId) => {
+
+    console.log(eventId)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+
+      if (result.isConfirmed) {
+        try {
+          const response = await axiosSecure.delete(`/event/${eventId}`);
+          console.log(response);
+          if (response.status == 200) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success"
+            });
+          }
+
+
+        } catch (error) {
+          console.error("Delete failed:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Something went wrong.",
+            icon: "error"
+          });
+        }
+      }
+    });
+  };
+
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-US", {
@@ -71,13 +108,13 @@ const MyEvents = ({ navigate }) => {
         <p className="text-gray-600">Manage the events you've created</p>
       </div>
 
-      {events.length === 0 ? (
+      {myEventData.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">📅</div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">No events created yet</h3>
           <p className="text-gray-500 mb-4">Start by creating your first event</p>
           <button
-            onClick={() => navigate("add-event")}
+            // onClick={() => navigate("add-event")}
             className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
           >
             Create Event
@@ -85,7 +122,7 @@ const MyEvents = ({ navigate }) => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events.map((event) => (
+          {myEventData.map((event) => (
             <div key={event.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
               <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
               <p className="text-sm text-gray-600 mb-3">👤 {event.name}</p>
@@ -112,7 +149,7 @@ const MyEvents = ({ navigate }) => {
                   ✏️ Update
                 </button>
                 <button
-                  onClick={() => handleDelete(event.id)}
+                  onClick={() => handleDelete(event._id)}
                   className="flex-1 bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-700 text-sm"
                 >
                   🗑️ Delete

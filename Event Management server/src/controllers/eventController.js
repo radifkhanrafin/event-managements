@@ -74,10 +74,31 @@ const getAllEvent = async (req, res) => {
         res.status(404).send({ message: error.message });
     }
 };
-const getEventById= async (req, res) => {
+const getEvent = async (req, res) => {
+    const id=req.params.id
+    console.log(req.body)
+    try {
+        const allEvent = await eventCollection.findById(id);
+        res.status(200).send(allEvent);
+    } catch (error) {
+        res.status(404).send({ message: error.message });
+    }
+};
+
+const getEventByIdAndDelete= async (req, res) => {
+    const id=req.params.eventId
+    try {
+        const Event = await eventCollection.findByIdAndDelete(id);
+        res.status(200).send(Event);
+    } catch (error) {
+        res.status(404).send({ message: error.message });
+    }
+};
+
+const getEventByUser= async (req, res) => {
     const id=req.params.id
     try {
-        const Event = await eventCollection.findById(id);
+        const Event = await eventCollection.find({createdBy:id});
         res.status(200).send(Event);
     } catch (error) {
         res.status(404).send({ message: error.message });
@@ -85,4 +106,32 @@ const getEventById= async (req, res) => {
 };
 
 
-module.exports = { postEvent, getAllEvent, updateEventAttendees,postManyEvent,getEventById }
+// update event body 
+
+// post a event  
+
+// ✅ PATCH /event/:id
+const updateEvent = async (req, res) => {
+  const eventId = req.params.id;
+  const updateData = req.body;
+
+  try {
+    const updatedEvent = await eventCollection.findByIdAndUpdate(
+      eventId,
+      updateData,
+      { new: true } // returns updated doc
+    );
+
+    if (!updatedEvent) {
+      return res.status(404).json({ error: "Event not found" });
+    }
+
+    res.status(200).json(updatedEvent);
+  } catch (error) {
+    console.error("Update error:", error);
+    res.status(500).json({ error: "Failed to update event" });
+  }
+};
+
+
+module.exports = { postEvent,getEvent, getAllEvent, updateEventAttendees,postManyEvent,getEventByUser,getEventByIdAndDelete ,updateEvent}

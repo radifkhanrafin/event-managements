@@ -2,9 +2,13 @@
 
 import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
-const Login = ({ navigate }) => {
+const Login = ( ) => {
   const { login } = useAuth()
+  const navigate=useNavigate();
+  const path=useLocation()
+  console.log(path?.state?.from?.pathname)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -57,7 +61,7 @@ const Login = ({ navigate }) => {
     try {
       const success = await login(formData.email, formData.password)
       if (success) {
-        navigate("home")
+        navigate(path?.state?.from?.pathname || '/')
       } else {
         setErrors({ general: "Invalid email or password" })
       }
@@ -139,13 +143,13 @@ const Login = ({ navigate }) => {
           <div className="text-center">
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
-              <button
-                type="button"
-                onClick={() => navigate("register")}
+              <Link to='/register'><button
+                type="button" 
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
                 Sign up
-              </button>
+              </button></Link>
+              
             </p>
           </div>
         </form>

@@ -1,8 +1,10 @@
- 
+
 import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
+import { useNavigate } from "react-router-dom"
 
-const Register = ({ navigate }) => {
+const Register = ( ) => {
+  const navigate = useNavigate();
   const { register } = useAuth()
   const [formData, setFormData] = useState({
     name: "",
@@ -67,9 +69,9 @@ const Register = ({ navigate }) => {
 
     try {
       const success = await register(formData.name, formData.email, formData.password, formData.photoURL)
-      
+      console.log(success)
       if (success) {
-        navigate("home")
+        navigate("/login")
       } else {
         setErrors({ general: "Email already exists or registration failed" })
       }
@@ -106,9 +108,8 @@ const Register = ({ navigate }) => {
               value={formData.name}
               onChange={handleChange}
               placeholder="Enter your full name"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.name ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.name ? "border-red-500" : "border-gray-300"
+                }`}
             />
             {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name}</p>}
           </div>
@@ -124,9 +125,8 @@ const Register = ({ navigate }) => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-300"
+                }`}
             />
             {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
           </div>
@@ -143,9 +143,8 @@ const Register = ({ navigate }) => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? "border-red-500" : "border-gray-300"
+                  }`}
               />
               <button
                 type="button"
@@ -169,9 +168,8 @@ const Register = ({ navigate }) => {
               value={formData.photoURL}
               onChange={handleChange}
               placeholder="Enter your photo URL"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.photoURL ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.photoURL ? "border-red-500" : "border-gray-300"
+                }`}
             />
             {errors.photoURL && <p className="text-sm text-red-500 mt-1">{errors.photoURL}</p>}
           </div>

@@ -3,10 +3,11 @@
 import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import { axiosSecure } from "../hooks/useAxios"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 
-const AddEvent = ({ navigate }) => {
-  const { user } = useAuth()
+const AddEvent = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
     name: "",
@@ -24,6 +25,7 @@ const AddEvent = ({ navigate }) => {
     }))
   }
 
+  // console.log(user._id)
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -35,14 +37,16 @@ const AddEvent = ({ navigate }) => {
       location: formData.location,
       description: formData.description,
       attendeeCount: 0,
-      createdBy: user?.id,
+      createdBy: user?._id,
       joinedUsers: [],
     }
+
+    console.log(newEvent)
     const response = await axiosSecure.post('/event', newEvent);
 
-    console.log(response.data);
+    console.log(response);
 
-    Navigate("events")
+    navigate("/events")
   }
 
   return (
@@ -110,15 +114,14 @@ const AddEvent = ({ navigate }) => {
               </label>
               <input
                 id="time"
-                name="time"
-                type="text"
-                placeholder="hh:mm AM/PM"
+                type="time"  // change type to time for native time picker
                 value={formData.time}
-                onChange={handleChange}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })} // update using setter inline
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
+
 
           </div>
 

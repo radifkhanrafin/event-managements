@@ -15,6 +15,7 @@ export const eventsLoader = async () => {
     return response.data;
 };
 
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
                 element: <Login></Login>
             },
             {
-                path: '/signup',
+                path: '/register',
                 element: <Register></Register>
             },
             {
