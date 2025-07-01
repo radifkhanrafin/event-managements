@@ -1,10 +1,10 @@
 
 import { useState } from "react"
-import { FaCrown, FaGem, FaHandSparkles, FaLocationDot } from "react-icons/fa6";
+ 
 import { useAuth } from "../contexts/AuthContext"
 import { axiosSecure } from "../hooks/useAxios"
-import { Navigate, useNavigate } from "react-router-dom"
-import { FaMagic } from "react-icons/fa";
+import { Navigate, useNavigate } from "react-router-dom" 
+import { FaCrown, FaGem, FaHandSparkles, FaLocationArrow, FaMagic } from "react-icons/fa"
 
 const AddEvent = () => {
   const { user } = useAuth();
@@ -187,7 +187,7 @@ const AddEvent = () => {
                 htmlFor="location"
                 className="text-sm font-medium text-gray-700 mb-1 flex gap-2 items-center transition-colors group-focus-within:text-pink-600"
               >
-                <FaLocationDot className="text-pink-500" /> Location
+                <FaLocationArrow className="text-pink-500" /> Location
               </label>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-rose-500/10 rounded-xl blur-sm opacity-0 group-focus-within:opacity-50 transition-all duration-300"></div>

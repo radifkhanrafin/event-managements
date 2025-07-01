@@ -3,9 +3,8 @@ import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 
-import { FaEye, FaLock } from "react-icons/fa6";
-import { MdAttachEmail } from "react-icons/md";
-import { IoEyeOffOutline } from "react-icons/io5";
+import { FaEye, FaLock } from "react-icons/fa";
+import { MdAttachEmail } from "react-icons/md"; 
 
 
 const Login = () => {
@@ -127,7 +126,7 @@ const Login = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
               >
-                {showPassword ? <IoEyeOffOutline /> : <FaEye />}
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
             {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}

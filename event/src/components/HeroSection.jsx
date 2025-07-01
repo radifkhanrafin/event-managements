@@ -1,8 +1,7 @@
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import {  } from "react-icons/fa";
-import { FaArrowRight, FaCalendarDays } from 'react-icons/fa6';
+import { FaArrowAltCircleRight } from "react-icons/fa"; 
 import { GiSparkles } from "react-icons/gi";
 
 
@@ -58,9 +57,9 @@ const HeroSection = () => {
                         <>
                             <Link to="/events">
                                 <button className="inline-flex items-center px-11 py-4 bg-white text-blue-600 hover:bg-blue-50 text-lg font-semibold rounded-full shadow-2xl transform hover:scale-105 transition-all duration-200">
-                                    <FaCalendarDays className="w-5 h-5 mr-2" />
+                                    {/* <FaCalendarDays className="w-5 h-5 mr-2" /> */}
                                     Browse Events
-                                    <FaArrowRight className="w-5 h-5 ml-2" />
+                                    {/* <FaArrowRight className="w-5 h-5 ml-2" /> */}
                                 </button>
                             </Link>
                             <Link to="/add-event">
@@ -80,7 +79,7 @@ const HeroSection = () => {
                                     className="inline-flex items-center px-8 py-4 bg-white text-blue-600 hover:bg-blue-50 text-lg font-semibold rounded-full shadow-2xl transform hover:scale-105 transition-all duration-200"
                                 >
                                     Get Started Free
-                                    <FaArrowRight className="w-5 h-5 ml-2" />
+                                    <FaArrowAltCircleRight className="w-5 h-5 ml-2" />
                                 </button>
                             </Link>
                             <Link to="/login">

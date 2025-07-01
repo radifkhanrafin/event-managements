@@ -20,8 +20,9 @@ serverApp.use(bodyParser.urlencoded({ extended: true }));
 
 
 serverApp.use(cors({
-    origin: 'http://localhost:5173',  // your frontend URL
-    credentials: true,                // enable sending cookies/credentials
+    origin: 'http://localhost:5173',   
+    // origin: 'https://helpful-toffee-b51f9f.netlify.app/',   
+    credentials: true,                
 }));
 
 

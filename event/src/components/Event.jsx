@@ -3,12 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { axiosSecure } from "../hooks/useAxios";
 import { toast } from "react-toastify";
 import useEvent from "../hooks/useEvent";
-import {
-  FaCalendar,
-  FaFilter,
-  FaHandSparkles,
-  FaGem,
-} from "react-icons/fa6";
+import {FaCalendar,FaFilter,FaHandSparkles,FaGem,} from "react-icons/fa";
 
 const Events = () => {
   const { user } = useAuth();

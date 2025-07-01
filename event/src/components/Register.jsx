@@ -2,9 +2,8 @@
 import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useNavigate } from "react-router-dom"
-import { FaEye, FaLock, FaPhotoFilm, FaUser } from "react-icons/fa6";
-import { MdAttachEmail } from "react-icons/md";
-import { IoEyeOffOutline, IoLockClosed } from "react-icons/io5";
+import { FaEye, FaLock, FaUser } from "react-icons/fa";
+import { MdAttachEmail } from "react-icons/md"; 
 
 
 const Register = () => {
@@ -137,7 +136,7 @@ const Register = () => {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              <IoLockClosed /> Password
+              <fa FaLock /> Password
             </label>
             <div className="relative">
               <input

@@ -1,24 +1,7 @@
 
 import { Link } from "react-router-dom"
 import {
-    FaTwitter,
-    FaFacebookF,
-    FaInstagram,
-    FaLinkedinIn,
-    FaYoutube,
-    FaEnvelope,
-    FaPhone,
-    FaLocationDot,
-    FaArrowRight,
-    FaGem,
-    FaCrown,
-    FaStar,
-    FaHeart,
-    FaCalendarDays,
-    FaUsers,
-    FaShield,
-    FaAward,
-    FaHandSparkles,
+    FaTwitter, FaFacebookF, FaInstagram,  FaLinkedinIn,  FaYoutube,  FaEnvelope, FaPhone, FaLocationDot,FaArrowRight,FaGem,FaCrown,FaStar,FaHeart,FaCalendarDays,FaUsers,FaShield,FaAward,FaHandSparkles,
 } from "react-icons/fa6"
 
 const Footer = () => {

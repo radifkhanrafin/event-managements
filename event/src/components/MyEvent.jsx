@@ -3,9 +3,10 @@ import { useState, } from "react"
 
 import { axiosSecure } from "../hooks/useAxios"
 import useMyEvent from '../hooks/useMyEvent'
-import { FaCalendar, FaDeleteLeft, FaLocationDot, FaPen, FaUser, FaUsers } from "react-icons/fa6";
+ 
 import { MdDeleteForever } from "react-icons/md";
 import { Link } from 'react-router-dom'
+import { FaCalendar, FaLocationArrow, FaPen, FaUser, FaUsers } from 'react-icons/fa';
 
 const MyEvents = () => {
   const [myEventData, loading, refetch] = useMyEvent();
@@ -146,7 +147,7 @@ const MyEvents = () => {
                       {formatDate(event.date)} at {formatTime(event.time)}
                     </div>
                     <div className="flex items-center text-sm text-gray-600">
-                      <FaLocationDot className="text-purple-600 mr-2" />
+                      <FaLocationArrow className="text-purple-600 mr-2" />
                       {event.location}
                     </div>
                   </div>

@@ -1,47 +1,40 @@
- 
+
 import { Link } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
-import {
-  FaCalendarCheck,
-  FaClock,
-  FaLocationDot,
-  FaUsers,
-  FaStar,
-  FaArrowRight,
-  // FaSparkles,
-  FaCalendarDays,
-} from "react-icons/fa6"
-import HeroSection from "./heroSection"
+// import { FaCalendarCheck, FaClock, FaLocationDot, FaUsers, FaStar, FaArrowRight, FaCalendarDays, } from "react-icons/fa"
+import HeroSection from "./HeroSection"
+import { FaArrowRight, FaCalendarDay, FaStar } from "react-icons/fa"
+ 
 
 const Homepage = ({ navigate }) => {
   const { user } = useAuth()
 
-  const features = [
-    {
-      icon: FaCalendarCheck,
-      title: "Easy Event Creation",
-      description: "Create and customize your events with our intuitive drag-and-drop interface",
-      color: "bg-blue-500",
-    },
-    {
-      icon: FaUsers,
-      title: "Community Driven",
-      description: "Connect with like-minded people and build lasting relationships",
-      color: "bg-purple-500",
-    },
-    {
-      icon: FaLocationDot,
-      title: "Location Intelligence",
-      description: "Smart location-based discovery and venue recommendations",
-      color: "bg-green-500",
-    },
-    {
-      icon: FaClock,
-      title: "Real-time Updates",
-      description: "Instant notifications and live event updates for all participants",
-      color: "bg-orange-500",
-    },
-  ]
+  // const features = [
+  //   {
+  //     icon: FaCalendarCheck,
+  //     title: "Easy Event Creation",
+  //     description: "Create and customize your events with our intuitive drag-and-drop interface",
+  //     color: "bg-blue-500",
+  //   },
+  //   {
+  //     icon: FaUsers,
+  //     title: "Community Driven",
+  //     description: "Connect with like-minded people and build lasting relationships",
+  //     color: "bg-purple-500",
+  //   },
+  //   {
+  //     icon: FaLocationDot,
+  //     title: "Location Intelligence",
+  //     description: "Smart location-based discovery and venue recommendations",
+  //     color: "bg-green-500",
+  //   },
+  //   {
+  //     icon: FaClock,
+  //     title: "Real-time Updates",
+  //     description: "Instant notifications and live event updates for all participants",
+  //     color: "bg-orange-500",
+  //   },
+  // ]
 
   const testimonials = [
     {
@@ -70,7 +63,7 @@ const Homepage = ({ navigate }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Hero Section */}
-     <HeroSection/>
+      <HeroSection />
 
       {/* Features Section */}
       <section className="py-24 bg-white relative">
@@ -93,7 +86,7 @@ const Homepage = ({ navigate }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
+            {/* {features.map((feature, index) => (
               <div
                 key={index}
                 className="group bg-white rounded-xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
@@ -106,7 +99,7 @@ const Homepage = ({ navigate }) => {
                 <h3 className="text-xl font-bold mb-4 text-gray-900">{feature.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
-            ))}
+            ))} */}
           </div>
         </div>
       </section>
@@ -189,7 +182,7 @@ const Homepage = ({ navigate }) => {
             ) : (
               <Link to="/events">
                 <button className="inline-flex items-center px-8 py-4 bg-white text-blue-600 hover:bg-blue-50 text-lg font-semibold rounded-full shadow-2xl transition-all duration-200">
-                  <FaCalendarDays className="w-5 h-5 mr-2" />
+                  <FaCalendarDay className="w-5 h-5 mr-2" />
                   Explore Events
                   <FaArrowRight className="w-5 h-5 ml-2" />
                 </button>
