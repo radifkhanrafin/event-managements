@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export const axiosSecure = axios.create({
-  baseURL: 'http://localhost:3000/api/',
+  // baseURL: 'http://localhost:3000/api/',
+  baseURL: 'https://event-management-server-70aj.onrender.com/api/',
   withCredentials: true,
 });
 

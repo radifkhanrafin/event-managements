@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 
-import { FaEye, FaLock } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { MdAttachEmail } from "react-icons/md"; 
 
 

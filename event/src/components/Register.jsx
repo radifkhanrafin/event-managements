@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useNavigate } from "react-router-dom"
-import { FaEye, FaLock, FaUser } from "react-icons/fa";
+import { FaEye, FaLock, FaPhotoVideo, FaUser } from "react-icons/fa";
 import { MdAttachEmail } from "react-icons/md"; 
 
 
@@ -162,7 +162,7 @@ const Register = () => {
 
           <div>
             <label htmlFor="photoURL" className="text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              <FaPhotoFilm /> Photo URL
+              <FaPhotoVideo /> Photo URL
             </label>
             <input
               id="photoURL"
